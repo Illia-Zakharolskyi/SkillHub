@@ -7,7 +7,7 @@ namespace Project.TowerDefense
     {
         private readonly string _baseDirectory = Application.persistentDataPath;
 
-        public void Save(string relativePath, object data)
+        public void SaveOrCreate(string relativePath, object data)
         {
             string fullPath = Path.Combine(_baseDirectory, relativePath);
             string json = JsonUtility.ToJson(data, false);
@@ -17,7 +17,7 @@ namespace Project.TowerDefense
                 string directory = Path.GetDirectoryName(fullPath);
                 if (!Directory.Exists(directory))
                 {
-                    Directory.CreateDirectory(directory);
+                    _ = Directory.CreateDirectory(directory);
                 }
 
                 File.WriteAllText(fullPath, json);

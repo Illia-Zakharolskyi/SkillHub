@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72a9cb1fa0ff3c4ba773b99cc741704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Common.Scripts.PlayerMouseLook
-  sensitivity: 0.2
+  sensitivity: 0.05
   smoothTime: 0.05
   minY: -10
   maxY: 30

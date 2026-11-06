@@ -1392,7 +1392,7 @@ GameObject:
   - component: {fileID: 955293065}
   - component: {fileID: 955293068}
   - component: {fileID: 955293069}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -1535,6 +1535,7 @@ MonoBehaviour:
   maxY: 80
   playerBody: {fileID: 1426635233}
   playerCamera: {fileID: 955293067}
+  actionsProvider: {fileID: 11400000, guid: 854fdf30f03c799419e978c9f40450cc, type: 2}
 --- !u!1 &990884320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,7 +1710,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238728144}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -1761,7 +1762,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -1825,7 +1826,7 @@ GameObject:
   - component: {fileID: 1426635234}
   - component: {fileID: 1426635235}
   - component: {fileID: 1426635228}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,9 +1849,9 @@ MonoBehaviour:
   backwardSpeed: 3
   strafeSpeed: 4
   jumpForce: 6
-  statesProvider: {fileID: 0}
-  eventsProvider: {fileID: 0}
-  inputActionsProvider: {fileID: 0}
+  statesProvider: {fileID: 11400000, guid: 16087395d8823d6418c9a42f1b0ec042, type: 2}
+  eventsProvider: {fileID: 11400000, guid: 4f170b8962b6fa14ba6da370173709f0, type: 2}
+  inputActionsProvider: {fileID: 11400000, guid: 854fdf30f03c799419e978c9f40450cc, type: 2}
   sphereCastRadius: 0.5
   sphereCastDistance: 0.3
   groundLayer:
@@ -2156,6 +2157,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0

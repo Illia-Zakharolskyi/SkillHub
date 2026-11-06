@@ -14,6 +14,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Modules/Projects/Projects_01-09/03_TowerDefense/Scenes/TowerDefense_Game.unity
     guid: 99ce94bb568b68946b0ad3b260844736
+  - enabled: 1
+    path: Assets/_Project/Modules/Tasks/Tasks_10-19/Task_16_Photon/Task_16_Photon.unity
+    guid: badd0935a1babea4aab34bd9a5fbed90
+  - enabled: 1
+    path: Assets/_Project/Modules/Tasks/Tasks_10-19/Task_17_CloudSave/Scenes/Game_CloudSave.unity
+    guid: 1193cd86f61179c4ba4e9fa83a730571
+  - enabled: 1
+    path: Assets/_Project/Modules/Tasks/Tasks_10-19/Task_17_CloudSave/Scenes/MainMenu_CloudSave.unity
+    guid: e18b83f0358e9d84896c5a035237ed75
   m_configObjects:
     com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: fef2a430a79cb304fb2c6b125a72c757, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 51929d6240a99bc4eb41133d1c56e0f1, type: 2}
