@@ -120,63 +120,63 @@ namespace Skillhub.Tasks.CloudSave
         }
 
         public async Task LoadDataAsync()
-{
-    if (!_isInitialized)
-    {
-        return;
-    }
-
-    try
-    {
-        var loadedData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { ValuesKey });
-
-        if (loadedData.TryGetValue(ValuesKey, out var item))
         {
-            int loadedGold = 0;
+            if (!_isInitialized)
+            {
+                return;
+            }
 
             try
             {
-                string json = JsonConvert.SerializeObject(loadedData);
-                JObject jObj = JObject.Parse(json);
+                var loadedData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { ValuesKey });
 
-                if (jObj[ValuesKey] != null)
+                if (loadedData.TryGetValue(ValuesKey, out var item))
                 {
-                    var token = jObj[ValuesKey];
+                    int loadedGold = 0;
 
-                    if (token is JObject obj && obj["Value"] != null)
+                    try
                     {
-                        loadedGold = obj["Value"].Value<int>();
+                        string json = JsonConvert.SerializeObject(loadedData);
+                        JObject jObj = JObject.Parse(json);
+
+                        if (jObj[ValuesKey] != null)
+                        {
+                            var token = jObj[ValuesKey];
+
+                            if (token is JObject obj && obj["Value"] != null)
+                            {
+                                loadedGold = obj["Value"].Value<int>();
+                            }
+                            else
+                            {
+                                loadedGold = token.Value<int>();
+                            }
+                        }
                     }
-                    else
+                    catch (Exception parseEx)
                     {
-                        loadedGold = token.Value<int>();
+                        Debug.LogError($"Failed to parse JSON value: {parseEx.Message}");
                     }
+
+                    if (_player != null)
+                    {
+                        _player.SetValues(loadedGold);
+                    }
+
+                    Debug.Log($"Data is successfully loaded: Values = {loadedGold}");
                 }
+                else
+                {
+                    Debug.Log("Cloud Save: Key not found in the cloud, leaving local data.");
+                }
+                HideError();
             }
-            catch (Exception parseEx)
+            catch (Exception ex)
             {
-                Debug.LogError($"Failed to parse JSON value: {parseEx.Message}");
+                ShowError("Failed to load data from the cloud.");
+                Debug.LogError($"Cloud Load Error: {ex.Message}");
             }
-
-            if (_player != null)
-            {
-                _player.SetValues(loadedGold);
-            }
-
-            Debug.Log($"Data is successfully loaded: Values = {loadedGold}");
         }
-        else
-        {
-            Debug.Log("Cloud Save: Key not found in the cloud, leaving local data.");
-        }
-        HideError();
-    }
-    catch (Exception ex)
-    {
-        ShowError("Failed to load data from the cloud.");
-        Debug.LogError($"Cloud Load Error: {ex.Message}");
-    }
-}
 
         private void ShowError(string message)
         {
