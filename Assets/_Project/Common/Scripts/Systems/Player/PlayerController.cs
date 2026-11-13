@@ -5,8 +5,6 @@ using Common.Scripts.Definitions.InputActions;
 using Common.Scripts.Definitions.States;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 
 namespace Common.Scripts.Systems.Player
@@ -14,15 +12,15 @@ namespace Common.Scripts.Systems.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Player Settings")]
-        [SerializeField] private float forwardSpeed = 5f;
-        [SerializeField] private float backwardSpeed = 3f;
-        [SerializeField] private float strafeSpeed = 4f;
+        [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float rotationSpeed = 720f; // degrees per second
         [SerializeField] private float jumpForce = 6f;
 
         [Header("References Settings")]
         [SerializeField] private StatesProvider statesProvider;
         [SerializeField] private EventsProvider eventsProvider;
         [SerializeField] private InputActionsProvider inputActionsProvider;
+        [SerializeField] private Transform cameraTransform; // the object with CinemachineBrain (Main Camera)
 
         [Header("SphereCast Settings")]
         [SerializeField] private float sphereCastRadius = 0.5f;
@@ -49,9 +47,25 @@ namespace Common.Scripts.Systems.Player
             }
             rb.freezeRotation = true;
 
-            if (statesProvider != null) playerState = statesProvider.PlayerState;
-            if (eventsProvider != null) playerMovementEvents = eventsProvider.PlayerMovementEvents;
-            if (inputActionsProvider != null) playerInputActions = inputActionsProvider.BaseControls.Player;
+            if (cameraTransform == null && Camera.main != null)
+            {
+                cameraTransform = Camera.main.transform;
+            }
+
+            if (statesProvider != null)
+            {
+                playerState = statesProvider.PlayerState;
+            }
+
+            if (eventsProvider != null)
+            {
+                playerMovementEvents = eventsProvider.PlayerMovementEvents;
+            }
+
+            if (inputActionsProvider != null)
+            {
+                playerInputActions = inputActionsProvider.BaseControls.Player;
+            }
         }
 
         private void OnEnable()
@@ -60,14 +74,17 @@ namespace Common.Scripts.Systems.Player
             {
                 return;
             }
-                
+
             inputActionsProvider.BaseControls.Enable();
             playerInputActions.Jump.performed += Jump;
         }
-        
+
         private void FixedUpdate()
         {
-            if (playerInputActions.Move == null) return;
+            if (playerInputActions.Move == null)
+            {
+                return;
+            }
 
             bool isGrounded = IsGrounded();
             if (playerState != null)
@@ -82,15 +99,14 @@ namespace Common.Scripts.Systems.Player
                 playerMovementEvents.RaiseMove(new Vector3(move.x, 0, move.y));
             }
 
-            float x = move.x;
-            float z = move.y;
+            Vector3 moveDirection = GetCameraRelativeDirection(move);
+            if (moveDirection.sqrMagnitude <= 0f)
+            {
+                return;
+            }
 
-            float speedZ = z > 0 ? forwardSpeed : backwardSpeed;
-
-            Vector3 movement = new Vector3(x * strafeSpeed, 0, z * speedZ);
-            movement = transform.TransformDirection(movement);
-
-            rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
+            RotateTowards(moveDirection);
+            rb.MovePosition(rb.position + moveDirection * (moveSpeed * Time.fixedDeltaTime));
         }
 
         private void OnDisable()
@@ -99,12 +115,31 @@ namespace Common.Scripts.Systems.Player
             {
                 return;
             }
-            
+
             playerInputActions.Jump.performed -= Jump;
             inputActionsProvider.BaseControls.Disable();
         }
 
         // Functional Methods
+        private Vector3 GetCameraRelativeDirection(Vector2 input)
+        {
+            if (cameraTransform == null || input == Vector2.zero)
+            {
+                return Vector3.zero;
+            }
+
+            Vector3 forward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
+            Vector3 right = Vector3.ProjectOnPlane(cameraTransform.right, Vector3.up).normalized;
+
+            return forward * input.y + right * input.x;
+        }
+
+        private void RotateTowards(Vector3 direction)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
+        }
+
         private void Jump(InputAction.CallbackContext context)
         {
             if (IsGrounded())
@@ -113,10 +148,10 @@ namespace Common.Scripts.Systems.Player
                 playerMovementEvents.RaiseJump();
             }
         }
+
         private bool IsGrounded()
         {
-            RaycastHit hit;
-            return Physics.SphereCast(transform.position, sphereCastRadius, Vector3.down, out hit, sphereCastDistance, groundLayer);
+            return Physics.SphereCast(transform.position, sphereCastRadius, Vector3.down, out _, sphereCastDistance, groundLayer);
         }
     }
 }

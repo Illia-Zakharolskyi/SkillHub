@@ -6,6 +6,7 @@
   <Project Path="Task_07_Animator.TwoDemensionalSpace.Scripts.csproj" />
   <Project Path="PhotonRealtime.csproj" />
   <Project Path="PhotonUnityNetworking.Utilities.csproj" />
+  <Project Path="Task.Cinemachine.csproj" />
   <Project Path="Common.Scripts.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="DOTween.Modules.csproj" />

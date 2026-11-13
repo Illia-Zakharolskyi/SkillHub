@@ -1,1 +1,14 @@
-This Project has gotten bigger and the developer decided to move it to independent project 
+This project grew larger, so I decided to move it into a standalone repository.
+
+UPDATE 07/11/2026: Unfortunately, the project was lost. Due to an issue with unsaved changes, something went wrong and all the work disappeared.
+It is especially frustrating because I put a lot of time and effort into it (~4 months). However, I view this as a valuable lesson, and from now on, I will commit and back up my work much more frequently.
+In a nutshell, it was a 2D game centered around two types of towers: a battle tower and an income tower. Players used gold to upgrade towers and diamonds to purchase them.
+
+Tower features:
+Battle Tower: Included targeting strategies (First, Last, Weakest, Strongest), upgrade costs, custom sprites, current stats, and projected stats after upgrades.
+Income Tower: Displayed current income, upgraded income, upgrade cost, and sprites.
+Scalability: The game balance was designed for high-wave counts, so I implemented a number formatting system (e.g., formatting 1111 as 1.111K).
+
+To streamline the 2D development process, I used Unity's 2D Tilemap Editor package to build the grid system and layout visuals, using graphics from kenney.nl.
+
+Also, i had much more ideas(e.g., creating support towers to slow down enemies or something like that) but as mentioned earlier, the project was lost.
